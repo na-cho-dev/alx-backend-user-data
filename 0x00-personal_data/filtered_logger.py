@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Regex-ing
+Personal Data Module Tasks
 """
 import re
 from typing import List
@@ -56,11 +56,13 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     host = environ.get("PERSONAL_DATA_DB_HOST", "localhost")
     db_name = environ.get("PERSONAL_DATA_DB_NAME")
 
-    cnx = mysql.connector.connection.MySQLConnection(user=username,
-                                                     password=password,
-                                                     host=host,
-                                                     database=db_name)
-    return cnx
+    conn = mysql.connector.connection.MySQLConnection(
+        user=username,
+        password=password,
+        host=host,
+        database=db_name)
+
+    return conn
 
 
 class RedactingFormatter(logging.Formatter):
