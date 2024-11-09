@@ -5,7 +5,7 @@ Personal Data Module Tasks
 import re
 from typing import List
 import logging
-from os import environ
+from os import getenv
 import mysql.connector
 
 
@@ -49,20 +49,16 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> mysql.connector.connection.MySQLConnection:
-    """ Returns a connector to a MySQL database """
-    username = environ.get("PERSONAL_DATA_DB_USERNAME", "root")
-    password = environ.get("PERSONAL_DATA_DB_PASSWORD", "")
-    host = environ.get("PERSONAL_DATA_DB_HOST", "localhost")
-    db_name = environ.get("PERSONAL_DATA_DB_NAME")
+def get_db() -> mysql.connector.connection.MYSQLConnection:
+    """ Connection to MySQL environment """
+    db_connect = mysql.connector.connect(
+        user=getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
+        password=getenv('PERSONAL_DATA_DB_PASSWORD', ''),
+        host=getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
+        database=getenv('PERSONAL_DATA_DB_NAME')
+    )
 
-    conn = mysql.connector.connection.MySQLConnection(
-        user=username,
-        password=password,
-        host=host,
-        database=db_name)
-
-    return conn
+    return db_connect
 
 
 class RedactingFormatter(logging.Formatter):
