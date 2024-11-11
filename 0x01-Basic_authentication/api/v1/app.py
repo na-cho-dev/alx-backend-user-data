@@ -30,12 +30,12 @@ def unauthorized(error) -> str:
     return jsonify({"error": "Unauthorized"}), 401
 
 
-@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
-def forbidden() -> str:
+@app.errorhandler(403)
+def forbidden(error) -> str:
     """
-    403 Forbidden error
+    403 Forbidden handler
     """
-    abort(403)
+    return jsonify({"error": "Forbidden"}), 403
 
 
 if __name__ == "__main__":
