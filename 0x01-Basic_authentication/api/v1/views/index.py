@@ -31,4 +31,3 @@ def unauthorized_error():
     Raise a 401 error by using abort
     """
     abort(401)
-    return jsonify({"error": "Unauthorized"}), 401
