@@ -18,7 +18,7 @@ auth_type = getenv("AUTH_TYPE")
 
 if auth_type:
     from api.v1.auth.auth import Auth
-    auth = Auth() 
+    auth = Auth()
 
 
 @app.before_request
@@ -29,7 +29,9 @@ def before_request():
     if auth is None:
         return
 
-    excluded_path = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+    excluded_path = ['/api/v1/status/',
+                     '/api/v1/unauthorized/',
+                     '/api/v1/forbidden/']
     if auth.require_auth(request.path, excluded_path):
         auth_header = auth.authorization_header(request)
         user = auth.current_user(request)
