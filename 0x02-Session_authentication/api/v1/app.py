@@ -28,7 +28,7 @@ else:
 
 
 @app.before_request
-def before_request():
+def auth_filter():
     """
     Filter each request
     """
