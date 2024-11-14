@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
+# MAIN APP TEST
 if pycodestyle api/v1/app.py; then
     echo "Successfully ran pycodestyle on api/v1/app.py"
 else
     echo "Error running pycodestyle on api/v1/app.py"
 fi
 
+# /// AUTH TEST ///
 if pycodestyle api/v1/auth/auth.py; then
     echo "Successfully ran pycodestyle on api/v1/auth/auth.py"
 else
@@ -24,6 +26,13 @@ else
     echo "Error running pycodestyle on api/v1/auth/session_auth.py"
 fi
 
+if pycodestyle api/v1/auth/session_exp_auth.py; then
+    echo "Successfully ran pycodestyle on api/v1/auth/session_exp_auth.py"
+else
+    echo "Error running pycodestyle on api/v1/auth/session_exp_auth.py"
+fi
+
+# /// VIEWS TEST ///
 if pycodestyle api/v1/views/index.py; then
     echo "Successfully ran pycodestyle on api/v1/views/index.py"
 else
