@@ -32,6 +32,12 @@ else
     echo "Error running pycodestyle on api/v1/auth/session_exp_auth.py"
 fi
 
+if pycodestyle api/v1/auth/session_db_auth.py; then
+    echo "Successfully ran pycodestyle on api/v1/auth/session_db_auth.py"
+else
+    echo "Error running pycodestyle on api/v1/auth/session_db_auth.py"
+fi
+
 # /// VIEWS TEST ///
 if pycodestyle api/v1/views/index.py; then
     echo "Successfully ran pycodestyle on api/v1/views/index.py"
@@ -49,4 +55,23 @@ if pycodestyle api/v1/views/users.py; then
     echo "Successfully ran pycodestyle on api/v1/views/users.py"
 else
     echo "Error running pycodestyle on api/v1/views/users.py"
+fi
+
+# /// MODELS TEST ///
+if pycodestyle models/base.py; then
+    echo "Successfully ran pycodestyle on models/base.py"
+else
+    echo "Error running pycodestyle on models/base.py"
+fi
+
+if pycodestyle models/user.py; then
+    echo "Successfully ran pycodestyle on models/user.py"
+else
+    echo "Error running pycodestyle on models/user.py"
+fi
+
+if pycodestyle models/user_session.py; then
+    echo "Successfully ran pycodestyle on models/user_session.py"
+else
+    echo "Error running pycodestyle on models/user_session.py"
 fi
