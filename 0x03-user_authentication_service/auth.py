@@ -47,14 +47,14 @@ class Auth:
             Return:
                 - User instance created
         """
-        db = self._db
         try:
-            user = db.find_user_by(email=email)
+            find_user = self._db.find_user_by(email=email)
+            if find_user:
+                raise ValueError(f"User {email} already exists")
         except NoResultFound:
-            user = db.add_user(email, _hash_password(password))
-            return user
-        else:
-            raise ValueError(f"User {email} already exists")
+            hashed_password = _hash_password(password).decode('utf-8')
+            new_user = self._db.add_user(email, hashed_password)
+            return new_user
 
     def valid_login(self, email: str, password: str) -> bool:
         """
