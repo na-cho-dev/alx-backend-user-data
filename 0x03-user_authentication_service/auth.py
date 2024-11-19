@@ -55,15 +55,12 @@ class Auth:
         """
         Check for Valid Login Details
         """
-        if not email or not password:
-            return False
-
         try:
             find_user = self._db.find_user_by(email=email)
-            hashed_password = find_user.hashed_password
-            return bcrypt.checkpw(password.encode(),
-                                  hashed_password.encode('utf-8'))
-        except (NoResultFound, InvalidRequestError):
+            hashed_password = find_user.hashed_password.encode('utf-8')
+            password = password.encode('utf-8')
+            return bcrypt.checkpw(password, hashed_password)
+        except NoResultFound:
             return False
 
     def create_session(self, email: str) -> str:
