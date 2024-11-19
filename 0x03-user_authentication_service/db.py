@@ -46,7 +46,7 @@ class DB:
         self._session.commit()
         return user
 
-    def find_user_by(self, **kwargs: Dict[str, Union[str, int]]) -> User:
+    def find_user_by(self, **kwargs) -> User:
         """
         Returns the first row found in the users table as
         filtered by the method’s input arguments
@@ -70,8 +70,7 @@ class DB:
         #     raise InvalidRequestError()
         # return user
 
-    def update_user(self, user_id: int,
-                    **kwargs: Dict[str, Union[str, int]]) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """
         Use find_user_by to locate the user to update, then will
         update the user’s attributes as passed in the method’s arguments
