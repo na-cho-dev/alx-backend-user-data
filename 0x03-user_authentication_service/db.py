@@ -62,14 +62,6 @@ class DB:
             raise NoResultFound
         return user_query
 
-        # try:
-        #     user = self._session.query(User).filter_by(**kwargs).one()
-        # except NoResultFound:
-        #     raise NoResultFound()
-        # except InvalidRequestError:
-        #     raise InvalidRequestError()
-        # return user
-
     def update_user(self, user_id: int, **kwargs) -> None:
         """
         Use find_user_by to locate the user to update, then will
