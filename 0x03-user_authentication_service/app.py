@@ -58,12 +58,15 @@ def logout():
     """
     Logout a User Based on User SessionID
     """
-    try:
-        session_id = request.cookies.get("session_id")
-        user = AUTH.get_user_from_session_id(session_id)
-        AUTH.destroy_session(user.id)
-    except NoResultFound:
+    session_id = request.cookies.get('session_id')
+    if not session_id:
         abort(403)
+
+    user = AUTH.get_user_from_session_id(session_id)
+    if not user:
+        abort(403)
+
+    AUTH.destroy_session(user.id)
 
 
 if __name__ == "__main__":
