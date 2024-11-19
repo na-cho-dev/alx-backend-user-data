@@ -44,12 +44,13 @@ class Auth:
         Register a new User
         """
         try:
-            self._db.find_user_by(email=email)
+            find_user = self._db.find_user_by(email=email)
+            if find_user:
+                raise ValueError("User {} already exists".format(email))
         except (NoResultFound, InvalidRequestError):
-            hashed = _hash_password(password)
-            return self._db.add_user(email, hashed.decode('utf-8'))
-        else:
-            raise ValueError('User {} already exists'.format(email))
+            hashed_password = _hash_password(password).decode('utf-8')
+            user = self._db.add_user(email, hashed_password)
+            return user
 
     def valid_login(self, email: str, password: str) -> bool:
         """
