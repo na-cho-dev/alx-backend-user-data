@@ -43,8 +43,8 @@ class Auth:
         Register a new User
         """
         try:
-            users_found = self._db.find_user_by(email=email)
-            if users_found:
+            find_user = self._db.find_user_by(email=email)
+            if find_user:
                 raise ValueError("User {} already exists".format(email))
         except (NoResultFound, InvalidRequestError):
             hashed_password = _hash_password(password).decode('utf-8')
@@ -55,16 +55,16 @@ class Auth:
         """
         Check for Valid Login Details
         """
+        if not email or not password:
+            return False
+
         try:
             find_user = self._db.find_user_by(email=email)
-            if find_user:
-                if (bcrypt.checkpw(password.encode('utf-8'),
-                                   find_user.hashed_password)):
-                    return True
-        except NoResultFound:
-            pass
-
-        return False
+            hashed_password = find_user.hashed_password
+            return bcrypt.checkpw(password.encode(),
+                                  hashed_password.encode('utf-8'))
+        except (NoResultFound, InvalidRequestError):
+            return False
 
     def create_session(self, email: str) -> str:
         """
