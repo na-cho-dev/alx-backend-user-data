@@ -76,30 +76,10 @@ class DB:
         Use find_user_by to locate the user to update, then will
         update the user’s attributes as passed in the method’s arguments
         """
-        try:
-            # Find the user with the given user ID
-            user = self.find_user_by(id=user_id)
-        except NoResultFound:
-            raise ValueError("User with id {} not found".format(user_id))
+        user = self.find_user_by(id=user_id)
 
-        # Update user's attributes
-        for key, value in kwargs.items():
-            if not hasattr(user, key):
-                # Raise error if an argument that does not correspond to a user
-                # attribute is passed
-                raise ValueError("User has no attribute {}".format(key))
-            setattr(user, key, value)
-
-        try:
-            # Commit changes to the database
-            self._session.commit()
-        except InvalidRequestError:
-            # Raise error if an invalid request is made
-            raise ValueError("Invalid request")
-        # user = self.find_user_by(id=user_id)
-
-        # for key, val in kwargs.items():
-        #     if not hasattr(User, key):
-        #         raise ValueError
-        #     setattr(user, key, val)
-        # self._session.commit()
+        for key, val in kwargs.items():
+            if not hasattr(User, key):
+                raise ValueError
+            setattr(user, key, val)
+        self._session.commit()

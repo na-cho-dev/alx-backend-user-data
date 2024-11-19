@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+if pycodestyle app.py; then
+    echo "Successfully ran app.py"
+else
+    echo "Error running app.py"
+fi
+
+if pycodestyle auth.py; then
+    echo "Successfully ran auth.py"
+else
+    echo "Error running auth.py"
+fi
+
+if pycodestyle db.py; then
+    echo "Successfully ran db.py"
+else
+    echo "Error running db.py"
+fi
+
+if pycodestyle user.py; then
+    echo "Successfully ran user.py"
+else
+    echo "Error running user.py"
+fi
