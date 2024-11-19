@@ -2,7 +2,7 @@
 """
 DB Module
 """
-from sqlalchemy import create_engine, tuple_
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
@@ -51,19 +51,17 @@ class DB:
         Returns the first row found in the users table as
         filtered by the method’s input arguments
         """
-        attrs, vals = [], []
-        for attr, val in kwargs.items():
-            if not hasattr(User, attr):
-                raise InvalidRequestError()
-            attrs.append(getattr(User, attr))
-            vals.append(val)
+        query = self._session.query(User)
+        for key, val in kwargs.items():
+            if not hasattr(User, key):
+                raise InvalidRequestError
+            query = query.filter(getattr(User, key) == val)
 
-        session = self._session
-        query = session.query(User)
-        user = query.filter(tuple_(*attrs).in_([tuple(vals)])).first()
-        if not user:
-            raise NoResultFound()
-        return user
+        user_query = query.first()
+        if user_query is None:
+            raise NoResultFound
+        return user_query
+
         # try:
         #     user = self._session.query(User).filter_by(**kwargs).one()
         # except NoResultFound:
@@ -71,16 +69,6 @@ class DB:
         # except InvalidRequestError:
         #     raise InvalidRequestError()
         # return user
-        # query = self._session.query(User)
-        # for key, val in kwargs.items():
-        #     if not hasattr(User, key):
-        #         raise InvalidRequestError
-        #     query = query.filter(getattr(User, key) == val)
-
-        # user_query = query.first()
-        # if user_query is None:
-        #     raise NoResultFound
-        # return user_query
 
     def update_user(self, user_id: int,
                     **kwargs: Dict[str, Union[str, int]]) -> None:
@@ -88,10 +76,30 @@ class DB:
         Use find_user_by to locate the user to update, then will
         update the user’s attributes as passed in the method’s arguments
         """
-        user = self.find_user_by(id=user_id)
+        try:
+            # Find the user with the given user ID
+            user = self.find_user_by(id=user_id)
+        except NoResultFound:
+            raise ValueError("User with id {} not found".format(user_id))
 
-        for key, val in kwargs.items():
-            if not hasattr(User, key):
-                raise ValueError
-            setattr(user, key, val)
-        self._session.commit()
+        # Update user's attributes
+        for key, value in kwargs.items():
+            if not hasattr(user, key):
+                # Raise error if an argument that does not correspond to a user
+                # attribute is passed
+                raise ValueError("User has no attribute {}".format(key))
+            setattr(user, key, value)
+
+        try:
+            # Commit changes to the database
+            self._session.commit()
+        except InvalidRequestError:
+            # Raise error if an invalid request is made
+            raise ValueError("Invalid request")
+        # user = self.find_user_by(id=user_id)
+
+        # for key, val in kwargs.items():
+        #     if not hasattr(User, key):
+        #         raise ValueError
+        #     setattr(user, key, val)
+        # self._session.commit()
