@@ -2,7 +2,7 @@
 """
 Flask App Module
 """
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, redirect, url_for
 from auth import Auth
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -12,7 +12,7 @@ AUTH = Auth()
 
 
 @app.route("/", methods=["GET"])
-def flask_app():
+def home():
     """
     Basic Flask App
     Retruns:
@@ -67,6 +67,7 @@ def logout():
         abort(403)
 
     AUTH.destroy_session(user.id)
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":
