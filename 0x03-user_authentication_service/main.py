@@ -10,6 +10,9 @@ Main file
 #     print("{}: {}".format(column, column.type))
 
 
+
+
+
 # from db import DB
 # from user import User
 
@@ -22,32 +25,38 @@ Main file
 # print(user_2.id)
 
 
-# from db import DB
-# from user import User
-
-# from sqlalchemy.exc import InvalidRequestError
-# from sqlalchemy.orm.exc import NoResultFound
 
 
-# my_db = DB()
 
-# user = my_db.add_user("test@test.com", "PwdHashed")
-# print(user.id)
+from db import DB
+from user import User
 
-# find_user = my_db.find_user_by(email="test@test.com")
-# print(find_user.id)
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
 
-# try:
-#     find_user = my_db.find_user_by(email="test2@test.com")
-#     print(find_user.id)
-# except NoResultFound:
-#     print("Not found")
 
-# try:
-#     find_user = my_db.find_user_by(no_email="test@test.com")
-#     print(find_user.id)
-# except InvalidRequestError:
-#     print("Invalid")
+my_db = DB()
+
+user = my_db.add_user("test@test.com", "PwdHashed")
+print(user.id)
+
+find_user = my_db.find_user_by(email="test@test.com")
+print(find_user.id)
+
+try:
+    find_user = my_db.find_user_by(email="test2@test.com")
+    print(find_user.id)
+except NoResultFound:
+    print("Not found")
+
+try:
+    find_user = my_db.find_user_by(no_email="test@test.com")
+    print(find_user.id)
+except InvalidRequestError:
+    print("Invalid")
+
+
+
 
 
 # from db import DB
@@ -72,9 +81,15 @@ Main file
 #     print("Error")
 
 
+
+
+
 # from auth import _hash_password
 
 # print(_hash_password("Hello Holberton"))
+
+
+
 
 
 # from auth import Auth
@@ -97,6 +112,9 @@ Main file
 #     print("could not create a new user: {}".format(err))
 
 
+
+
+
 # from auth import Auth
 
 # email = 'bob@bob.com'
@@ -112,13 +130,16 @@ Main file
 # print(auth.valid_login("unknown@email", password))
 
 
-from auth import Auth
 
-email = 'bob@bob.com'
-password = 'MyPwdOfBob'
-auth = Auth()
 
-auth.register_user(email, password)
 
-print(auth.create_session(email))
-print(auth.create_session("unknown@email.com"))
+# from auth import Auth
+
+# email = 'bob@bob.com'
+# password = 'MyPwdOfBob'
+# auth = Auth()
+
+# auth.register_user(email, password)
+
+# print(auth.create_session(email))
+# print(auth.create_session("unknown@email.com"))

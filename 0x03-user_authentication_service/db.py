@@ -9,6 +9,7 @@ from sqlalchemy.orm.session import Session
 
 from user import Base, User
 from typing import Dict, Union
+
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -53,11 +54,15 @@ class DB:
         for key, val in kwargs.items():
             if not hasattr(User, key):
                 raise InvalidRequestError
-            user_query = (self._session.query(User)
-                          .filter(getattr(User, key) == val).first())
+            query = (self._session.query(User)
+                     .filter(getattr(User, key) == val))
 
-            if user_query is None:
-                raise NoResultFound
+        # user_query = (self._session.query(User)
+        #                 .filter(getattr(User, key) == val).first())
+
+        user_query = query.first()
+        if user_query is None:
+            raise NoResultFound
         return user_query
 
     def update_user(self, user_id: int,
