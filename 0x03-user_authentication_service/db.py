@@ -2,7 +2,7 @@
 """
 DB Module
 """
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, tuple_
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
@@ -51,13 +51,26 @@ class DB:
         Returns the first row found in the users table as
         filtered by the method’s input arguments
         """
-        try:
-            user = self._session.query(User).filter_by(**kwargs).one()
-        except NoResultFound:
+        attrs, vals = [], []
+        for attr, val in kwargs.items():
+            if not hasattr(User, attr):
+                raise InvalidRequestError()
+            attrs.append(getattr(User, attr))
+            vals.append(val)
+
+        session = self._session
+        query = session.query(User)
+        user = query.filter(tuple_(*attrs).in_([tuple(vals)])).first()
+        if not user:
             raise NoResultFound()
-        except InvalidRequestError:
-            raise InvalidRequestError()
         return user
+        # try:
+        #     user = self._session.query(User).filter_by(**kwargs).one()
+        # except NoResultFound:
+        #     raise NoResultFound()
+        # except InvalidRequestError:
+        #     raise InvalidRequestError()
+        # return user
         # query = self._session.query(User)
         # for key, val in kwargs.items():
         #     if not hasattr(User, key):
