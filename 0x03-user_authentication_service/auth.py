@@ -66,7 +66,7 @@ class Auth:
             )
             # hashed_password = find_user.hashed_password.encode('utf-8')
             return bcrypt.checkpw(password, hashed_password)
-        except NoResultFound:
+        except Exception:
             return False
 
     def create_session(self, email: str) -> str:
