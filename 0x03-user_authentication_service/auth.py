@@ -44,10 +44,12 @@ class Auth:
         Register a new User
         """
         try:
-            self._db.find_user_by(email=email)
-        except NoResultFound:
-            return self._db.add_user(email, _hash_password(password))
-        raise ValueError("User {} already exists".format(email))
+            user = self._db.find_user_by(email=email)
+            raise ValueError(f"User {user.email} already exists")
+        except (InvalidRequestError, NoResultFound):
+            hashed_password = _hash_password(password)
+            user = self._db.add_user(email, hashed_password)
+            return user
         # try:
         #     find_user = self._db.find_user_by(email=email)
         #     if find_user:
