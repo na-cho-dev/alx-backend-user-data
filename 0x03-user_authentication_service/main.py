@@ -20,7 +20,7 @@ def register_user(email: str, password: str) -> None:
     response = requests.post(url, data=data)
     res_msg = {"email": email, "message": "user created"}
 
-    assert response.status_code == 200
+    assert response.status_code == 200, response.text
     assert response.json() == res_msg
 
 

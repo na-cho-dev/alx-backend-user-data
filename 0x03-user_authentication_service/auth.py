@@ -48,7 +48,7 @@ class Auth:
             if find_user:
                 raise ValueError(f"User {find_user.email} already exists")
         except NoResultFound:
-            hashed_password = _hash_password(password)
+            hashed_password = _hash_password(password).decode('utf-8')
             user = self._db.add_user(email, hashed_password)
             return user
 
@@ -64,6 +64,7 @@ class Auth:
                 if isinstance(find_user.hashed_password, str)
                 else find_user.hashed_password
             )
+            # hashed_password = find_user.hashed_password.encode('utf-8')
             return bcrypt.checkpw(password, hashed_password)
         except NoResultFound:
             return False
