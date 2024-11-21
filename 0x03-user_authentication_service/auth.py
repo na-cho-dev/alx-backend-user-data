@@ -43,15 +43,17 @@ class Auth:
         """
         Register a new User
         """
+        if not isinstance(email, str) or not isinstance(password, str):
+            raise ValueError("Email and Password must be a string")
+
         try:
-            find_user = self._db.find_user_by(email=email)
-            if find_user:
-                raise ValueError(f"User {find_user.email} already exists")
-        except ValueError:
-            raise
-        except Exception:
+            self._db.find_user_by(email=email)
+            raise ValueError(f"User {email} already exists")
+        except NoResultFound:
             hashed_password = _hash_password(password).decode('utf-8')
-            user = self._db.add_user(email, hashed_password)
+            user = self._db.add_user(email=email,
+                                     hashed_password=hashed_password)
+
             return user
 
     def valid_login(self, email: str, password: str) -> bool:
