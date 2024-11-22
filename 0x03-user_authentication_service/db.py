@@ -51,19 +51,24 @@ class DB:
         Returns the first row found in the users table as
         filtered by the method’s input arguments
         """
-        if not kwargs:
-            raise ValueError
+        # query = self._session.query(User)
+        for key, val in kwargs.items():
+            if not hasattr(User, key):
+                raise InvalidRequestError
+            # query = query.filter(getattr(User, key) == val)
 
+        # user_query = query.first()
         user_query = self._session.query(User).filter_by(kwargs).first()
         if user_query is None:
             raise NoResultFound
         return user_query
+        # if not kwargs:
+        #     raise ValueError
 
-        # query = self._session.query(User)
-        # for key, val in kwargs.items():
-        #     if not hasattr(User, key):
-        #         raise InvalidRequestError
-        #     query = query.filter(getattr(User, key) == val)
+        # user_query = self._session.query(User).filter_by(kwargs).first()
+        # if user_query is None:
+        #     raise NoResultFound
+        # return user_query
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """
