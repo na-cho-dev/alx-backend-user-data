@@ -41,7 +41,7 @@ class DB:
         """
         Save the user to the database
         """
-        user = User(email=email, hashed_password=hashed_password)
+        user = User(email, hashed_password)
         self._session.add(user)
         self._session.commit()
         return user
@@ -51,6 +51,7 @@ class DB:
         Returns the first row found in the users table as
         filtered by the method’s input arguments
         """
+        # This works as well
         # query = self._session.query(User)
         # for key, val in kwargs.items():
         #     if not hasattr(User, key):

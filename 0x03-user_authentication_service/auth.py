@@ -53,7 +53,7 @@ class Auth:
             pass
 
         hashed_password = _hash_password(password)
-        user = self._db.add_user(email=email, hashed_password=hashed_password)
+        user = self._db.add_user(email, hashed_password)
         return user
 
     def valid_login(self, email: str, password: str) -> bool:
